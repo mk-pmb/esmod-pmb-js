@@ -1,0 +1,28 @@
+{ "name": "esmod-pmb",
+  "version": "0.1.0",
+  "description": "Use @std/esm (ES modules, import, export for Node v6) with less boilerplate.",
+  "keywords": [],
+
+  "author": "M.K. (https://github.com/mk-pmb)",
+  "homepage": "https://github.com/mk-pmb/esmod-pmb-js/#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mk-pmb/esmod-pmb-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mk-pmb/esmod-pmb-js/issues"
+  },
+  "contributors": [],
+
+  "private": false, "license": "ISC",
+  "main": "reexport.js",
+  "scripts": { "test": "nodejs test/all.js" },
+  "directories": { "test": "test" },
+
+  "dependencies": {
+    "@std/esm": "^0.19.7"
+  },
+
+
+  "npm vs. BOM = Unexpected token": "-*- coding: UTF-8 -*-"
+}

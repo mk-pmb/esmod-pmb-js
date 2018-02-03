@@ -1,5 +1,5 @@
-import reex from '../reexport';
+import dfOnly from './default-export-only.mjs';
+import * as named from './named-exports-only.mjs';
 
-export const { guessMjsFile } = reex;
-export const answer = 42;
-export default { nodeVersion: process.versions.node };
+export default dfOnly;
+export const { foo, answer } = named;

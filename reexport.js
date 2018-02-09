@@ -2,7 +2,7 @@
 'use strict';
 
 var EX, stdEsm = require('@std/esm'), dfOpt,
-  objHas = Object.prototype.hasOwnProperty;
+  obAss = Object.assign, objHas = Object.prototype.hasOwnProperty;
 
 dfOpt = {
   esm: 'js',
@@ -20,14 +20,14 @@ dfOpt = {
 function ifObj(x, d) { return ((x && typeof x) === 'object' ? x : d); }
 
 function subObAss(dest, prop, src) {
-  var ass = Object.assign({}, (src || dfOpt)[prop], dest[prop]);
+  var ass = obAss({}, (src || dfOpt)[prop], dest[prop]);
   dest[prop] = ass;
   return ass;
 }
 
 function optimizeOpts(origOpts) {
   if (!origOpts) { return dfOpt; }
-  var opt = Object.assign({}, dfOpt, origOpts);
+  var opt = obAss({}, dfOpt, origOpts);
   if (opt.cjs !== true) { subObAss(opt, 'cjs'); }
   return opt;
 }
@@ -55,11 +55,13 @@ function checkPreferDefault(mod, opt) {
 
 EX = function esmBridge(bridgeModule, opt) {
   opt = optimizeOpts(opt);
-  var esmRequire = stdEsm(bridgeModule, opt), mjsFn, esMod;
+  var esmRequire = stdEsm(bridgeModule, opt), mjsFn, esMod, expo;
   if (opt.reexport) {
     mjsFn = EX.guessMjsFile(bridgeModule, opt);
-    esMod = checkPreferDefault(esmRequire(mjsFn), opt);
-    bridgeModule.exports = esMod;
+    esMod = esmRequire(mjsFn);
+    expo = checkPreferDefault(esMod, opt);
+    // console.log('<<', mjsFn.replace(/\S+\//, ''), expo, obAss({}, expo));
+    bridgeModule.exports = obAss({}, expo);
   }
   return esmRequire;
 };

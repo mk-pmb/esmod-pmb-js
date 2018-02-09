@@ -1,5 +1,5 @@
 { "name": "esmod-pmb",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Use @std/esm (ES modules, import, export for Node v6) with less boilerplate.",
   "keywords": [],
 
@@ -20,10 +20,11 @@
   "directories": { "test": "test" },
 
   "dependencies": {
-    "@std/esm": "^0.19.7"
+    "@std/esm": "0.21.1"
   },
   "devDependencies": {
-    "equal-pmb": "^0.1.15"
+    "equal-pmb": "^0.1.15",
+    "usnam-pmb": "^0.2.3"
   },
 
 

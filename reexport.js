@@ -7,12 +7,13 @@ var EX, stdEsm = require('@std/esm'), dfOpt,
 dfOpt = {
   esm: 'js',
   cjs: {
-    // namedExports: true,  // <- seems to have  no effect anyway
-    // interop: true,       // <- seems to have  no effect anyway
+    // namedExports: true,  // <- seems to have no effect anyway
+    // interop: true,       // <- seems to have no effect anyway
   },
   stripSuffixes: /(?:[\.\-](?:c?js|common|node|bridge))+$/,
   addSuffix: '.mjs',
   preferDefaultExport: 1,
+  resolveImportedValues: true,
   reexport: true,
 };
 
@@ -60,8 +61,8 @@ EX = function esmBridge(bridgeModule, opt) {
     mjsFn = EX.guessMjsFile(bridgeModule, opt);
     esMod = esmRequire(mjsFn);
     expo = checkPreferDefault(esMod, opt);
-    // console.log('<<', mjsFn.replace(/\S+\//, ''), expo, obAss({}, expo));
-    bridgeModule.exports = obAss({}, expo);
+    if (ifObj(expo) && opt.resolveImportedValues) { expo = obAss({}, expo); }
+    bridgeModule.exports = expo;
   }
   return esmRequire;
 };

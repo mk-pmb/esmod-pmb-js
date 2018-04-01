@@ -85,6 +85,85 @@ $ nodejs -p "require('@std/esm')(module)('./default-export-only.mjs')"
 
 
 
+API
+---
+
+```javascript
+// standard:
+require('esmod-pmb')(module);
+
+// custom options:
+require('esmod-pmb')(module, { preferDefaultExport: false });
+
+// detailed:
+var bridgeBuilder = require('esmod-pmb');
+var opt = { reexport: false };
+var esmRequire = bridgeBuilder(module, opt);
+var yourEsModule = esmRequire('./yourmodule.mjs');
+```
+
+This module exports one function:
+
+### esmRqr = bridgeBuilder(baseModule[, opt])
+
+Returns an ESM-capable `require`-like function obtained from `@std/esm`.
+
+The optional options object `opt` can be used to modify the default
+options.
+
+If you need custom options for something you consider "normal"/"usual",
+please file an issue so we can try to provide better defaults.
+After all, the purpose of this module is to _reduce_ boilerplate.
+
+That said, `bridgeBuilder` uses the same options object as `@std/esm`,
+so you can use all of its options, and some additional ones:
+
+  * `reexport`: (bool, default: true)
+    Whether `bridgeBuilder` shall do its main magic:
+    1. guess the name of your ES module,
+    1. import it,
+    1. (skippable) resolve the imported bindings
+    1. and "re-export" them, i.e. assign the imported values to
+      `baseModule.exports`.
+    * Set to `false` to opt-out of the main magic, but still get an `esmRqr`
+      with the combined options based on this module's defaults.
+
+Options used only when `reexport` is enabled:
+
+  * `stripSuffixes`: (regexp) and `addSuffix` (string, default: `".mjs"`)
+    To guess the ES module filename, the `bridgeBuilder` removes the part
+    matched by `stripSuffixes` and appends `addSuffix`.
+
+  * `resolveImportedValues`: (bool, default: `true`)
+    Whether to resolve (copy) the imported values.
+    Set to `false` if you prefer getter functions.
+    Sane modules usually shouldn't mutate their exports,
+    so usually resolving them makes life easier
+    by reducing the amount of magic involved.
+
+  * `preferDefaultExport`: Determines which of the ESM exports
+    shall be re-export into CommonJS land.
+    * `false` = all of them. The re-export will be a dictionary (object).
+      If the ES module only has a default export, the dictionary will
+      contain only one key, `default`.
+    * `true` = only the default export.
+      If the ES module doesn't have a default export,
+      the re-export will be `undefined`.
+    * `1` (as a number; also the default) = automatic.
+      The re-export will be a dictionary with all exports, except in case
+      there is only one single export and its name is `default`; in that case,
+      that default export will be re-exported directly.
+
+
+
+
+
+
+
+
+
+
+
 
 
 

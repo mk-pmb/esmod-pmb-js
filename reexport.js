@@ -10,6 +10,7 @@ dfOpt = {
   cjs: {
     // namedExports: true,  // <- seems to have no effect anyway
     // interop: true,       // <- seems to have no effect anyway
+    paths: true,  // support old-school node path rules
   },
   stripSuffixes: /(?:[\.\-](?:c?js|common|node|bridge))+$/,
   addSuffix: '.mjs',

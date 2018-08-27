@@ -20,11 +20,11 @@
   "directories": { "test": "test" },
 
   "dependencies": {
-    "esm": "^3.0.14"
+    "esm": "^3.0.72"
   },
   "devDependencies": {
-    "equal-pmb": "^0.1.15",
-    "usnam-pmb": "^0.2.3"
+    "equal-pmb": "^0.1.16",
+    "usnam-pmb": "^0.2.4"
   },
 
 

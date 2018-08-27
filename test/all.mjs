@@ -1,3 +1,3 @@
-import './usage.verify-reimported.mjs';
+import './usage.verify-reimported';
 
 console.log('+OK all tests passed.');

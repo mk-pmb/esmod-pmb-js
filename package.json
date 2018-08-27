@@ -24,7 +24,11 @@
   },
   "devDependencies": {
     "equal-pmb": "^0.1.16",
+    "lodash.upperfirst": "^4.3.1",
     "usnam-pmb": "^0.2.4"
+  },
+  "peerDependencies": {
+    "lodash.lowerfirst": "^4.3.1"
   },
 
 

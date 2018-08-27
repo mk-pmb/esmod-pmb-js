@@ -2,6 +2,7 @@
 'use strict';
 
 var EX, stdEsm = require('esm'), dfOpt,
+  esmVer = require('esm/package.json').version,
   esmApi = require('./esm-api.js'),
   obAss = Object.assign, objHas = Object.prototype.hasOwnProperty;
 
@@ -74,7 +75,17 @@ function fixEsmOpt(opt) {
 
 EX = function esmBridge(bridgeModule, opt) {
   opt = optimizeOpts(opt);
-  var esmRqr = stdEsm(bridgeModule, fixEsmOpt(opt)), mjsFn, esMod, expo;
+  var fixedOpts = fixEsmOpt(opt), esmRqr, mjsFn, esMod, expo;
+  console.debug({
+    stdEsmVersion: esmVer,
+    node: {
+      version: process.versions.node,
+      platform: process.platform,
+      arch: process.arch,
+    },
+    effectiveStdEsmOpts: fixedOpts,
+  });
+  esmRqr = stdEsm(bridgeModule, fixedOpts);
   if (opt.reexport) {
     mjsFn = EX.guessMjsFile(bridgeModule, opt);
     esMod = esmRqr(mjsFn);

@@ -1,9 +1,13 @@
 /*jslint indent: 2, maxlen: 80, node: true */
 'use strict';
 
-var EX, stdEsm = require('esm'), dfOpt,
+var EX, stdEsm = require('esm'), dfOpt, envOpt,
   esmApi = require('./esm-api.js'),
   obAss = Object.assign, objHas = Object.prototype.hasOwnProperty;
+
+envOpt = {
+  debugEsm: (+process.env.ESMODPMB_DEBUG_ESM || 0),
+};
 
 dfOpt = {
   mode: 'auto',
@@ -24,6 +28,7 @@ dfOpt = {
   preferDefaultExport: 1,
   resolveImportedValues: true,
   reexport: true,
+  debug: (envOpt.debugEsm >= 1),
 };
 
 
@@ -39,6 +44,7 @@ function optimizeOpts(origOpts) {
   if (!origOpts) { return dfOpt; }
   var opt = obAss({}, dfOpt, origOpts);
   if (opt.cjs !== true) { subObAss(opt, 'cjs'); }
+  if (envOpt.debugEsm > 9e3) { opt.debug = true; }
   return opt;
 }
 

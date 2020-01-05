@@ -1,6 +1,6 @@
 { "name": "esmod-pmb",
-  "version": "0.1.10",
-  "description": "Use @std/esm (ES modules, import, export for Node v6) with less boilerplate.",
+  "version": "0.1.11",
+  "description": "Use esm (ES modules, import, export for Node v6) with less boilerplate.",
   "keywords": [],
 
   "author": "M.K. (https://github.com/mk-pmb)",
@@ -20,11 +20,11 @@
   "directories": { "test": "test" },
 
   "dependencies": {
-    "esm": "^3.2.18"
+    "esm": "^3.2.25"
   },
   "devDependencies": {
-    "equal-pmb": "^0.1.16",
-    "p-fatal": "^0.1.1",
+    "equal-pmb": "^0.1.20",
+    "p-fatal": "^0.1.2",
     "usnam-pmb": "^0.2.4"
   },
 

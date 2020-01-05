@@ -5,7 +5,7 @@ esmod-pmb
 <!--/#echo -->
 
 <!--#echo json="package.json" key="description" -->
-Use @std/esm (ES modules, import, export for Node v6) with less boilerplate.
+Use esm (ES modules, import, export for Node v6) with less boilerplate.
 <!--/#echo -->
 
 
@@ -17,8 +17,8 @@ Let's assume you have an ES module like [`usage.mjs`](test/usage.mjs):
 <!--#include file="test/usage.mjs" code="javascript" -->
 <!--#verbatim lncnt="7" -->
 ```javascript
-import dfOnly from './default-export-only.mjs';
-import * as named from './named-exports-only.mjs';
+import dfOnly from './default-export-only';
+import * as named from './named-exports-only';
 
 export default dfOnly;
 export const { foo, answer } = named;
@@ -26,10 +26,10 @@ export const { foo, answer } = named;
 <!--/include-->
 
 … and you want to use it from old node's CommonJS realm.
-The `@std/esm` module can do it:
+The `esm` module can do it:
 
 ```javascript
-module.exports = require('@std/esm')(module)('./usage.mjs')
+module.exports = require('esm')(module)('./usage.mjs')
 ```
 
 But that's still a bit too much boilerplate for my taste.
@@ -79,7 +79,7 @@ export default { isDefaultExport: true, bar: 5 };
 ```bash
 $ nodejs -p "require('./default-export-only.node.js')"
 { isDefaultExport: true, bar: 5 }
-$ nodejs -p "require('@std/esm')(module)('./default-export-only.mjs')"
+$ nodejs -p "require('esm')(module)('./default-export-only.mjs')"
 { default: [Getter] }
 ```
 
@@ -106,7 +106,7 @@ This module exports one function:
 
 ### esmRqr = bridgeBuilder(baseModule[, opt])
 
-Returns an ESM-capable `require`-like function obtained from `@std/esm`.
+Returns an ESM-capable `require`-like function obtained from `esm`.
 
 The optional options object `opt` can be used to modify the default
 options.
@@ -115,7 +115,7 @@ If you need custom options for something you consider "normal"/"usual",
 please file an issue so we can try to provide better defaults.
 After all, the purpose of this module is to _reduce_ boilerplate.
 
-That said, `bridgeBuilder` uses the same options object as `@std/esm`,
+That said, `bridgeBuilder` uses the same options object as `esm`,
 so you can use all of its options, and some additional ones:
 
   * `reexport`: (bool, default: true)

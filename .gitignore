@@ -2,5 +2,6 @@
 /node_modules/.cache/esm/
 /node_modules/equal-pmb
 /node_modules/esm
+/node_modules/is-fn
 /node_modules/p-fatal
 /node_modules/usnam-pmb

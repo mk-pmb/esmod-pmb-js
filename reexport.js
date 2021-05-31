@@ -1,6 +1,8 @@
 /*jslint indent: 2, maxlen: 80, node: true */
 'use strict';
 
+require('./node_v12_workaround');
+
 var EX, stdEsm = require('esm'), dfOpt, envOpt,
   esmApi = require('./esm-api.js'),
   obAss = Object.assign, objHas = Object.prototype.hasOwnProperty;
@@ -88,6 +90,28 @@ function fixEsmOpt(opt) {
 EX = function esmBridge(bridgeModule, opt) {
   opt = optimizeOpts(opt);
   var esmRqr = stdEsm(bridgeModule, fixEsmOpt(opt)), mjsFn, esMod, expo;
+
+  /*
+  function node12workaround(id) {
+    function ok(val) {
+      console.error('dynImport ok', id, val);
+      return ok;
+    }
+    function no(err) { console.error('dynImport fail', id, err); }
+    var abs;
+    try {
+      return esmRqr(id);
+    } catch (rqrErr) {
+      if ((rqrErr.code === 'ERR_REQUIRE_ESM') && nativeDynamicImport.func) {
+        abs = esmRqr.resolve(id);
+        console.error('dynImport abs', id, abs);
+        return nativeDynamicImport.func(abs).then(ok, no);
+      }
+      throw rqrErr;
+    }
+  }
+  */
+
   if (opt.reexport) {
     mjsFn = EX.guessMjsFile(bridgeModule, opt);
     esMod = esmRqr(mjsFn);

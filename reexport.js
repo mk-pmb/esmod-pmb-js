@@ -87,7 +87,8 @@ function fixEsmOpt(opt) {
 
 EX = function esmBridge(bridgeModule, opt) {
   opt = optimizeOpts(opt);
-  var esmRqr = stdEsm(bridgeModule, fixEsmOpt(opt)), mjsFn, esMod, expo;
+  var esmRqr, mjsFn, esMod, expo;
+  esmRqr = EX.bridgeImporter(bridgeModule, fixEsmOpt(opt));
   if (opt.reexport) {
     mjsFn = EX.guessMjsFile(bridgeModule, opt);
     esMod = esmRqr(mjsFn);
@@ -99,6 +100,7 @@ EX = function esmBridge(bridgeModule, opt) {
 };
 EX.defaultConfig = dfOpt;
 
+EX.bridgeImporter = stdEsm;
 
 EX.guessMjsFile = function (cjsMod, opt) {
   return (replaceIfRx((cjsMod.filename || cjsMod), opt.stripSuffixes

@@ -1,5 +1,5 @@
 { "name": "esmod-pmb",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Use esm (ES modules, import, export for Node v6) with less boilerplate.",
   "keywords": [],
 

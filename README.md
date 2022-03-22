@@ -17,8 +17,8 @@ Let's assume you have an ES module like [`usage.mjs`](test/usage.mjs):
 <!--#include file="test/usage.mjs" code="javascript" -->
 <!--#verbatim lncnt="7" -->
 ```javascript
-import dfOnly from './default-export-only';
-import * as named from './named-exports-only';
+import dfOnly from './default-export-only.mjs';
+import * as named from './named-exports-only.mjs';
 
 export default dfOnly;
 export const { foo, answer } = named;

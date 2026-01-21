@@ -1,13 +1,19 @@
 /*jslint indent: 2, maxlen: 80, node: true */
 'use strict';
 
-var EX, stdEsm = require('esm'), dfOpt, envOpt,
-  esmApi = require('./esm-api.js'),
+var EX, adapter, pkgName = require('./package.json').name,
+  dfOpt,
+  nodeVerNums = process.versions.node.split('.').map(Number),
+  envOpt = require('./envOpt.js'),
   obAss = Object.assign, objHas = Object.prototype.hasOwnProperty;
 
-envOpt = {
-  debugEsm: (+process.env.ESMODPMB_DEBUG_ESM || 0),
-};
+adapter = (function nodeVersionsGate() {
+  if (nodeVerNums[0] <= 21) { return require('./adapter-n16.js'); }
+  var msg = (pkgName + ' is incompatible with your Node.js version.'
+    );
+  throw new Error(msg);
+}());
+
 
 dfOpt = {
   mode: 'auto',
@@ -68,26 +74,10 @@ function checkPreferDefault(mod, opt) {
 }
 
 
-function fixEsmOpt(opt) {
-  var clean = {};
-  function copy(key) {
-    if (objHas.call(opt, key)) { clean[key] = opt[key]; }
-  }
-  esmApi.coreOptNames.forEach(copy);
-  esmApi.devOptNames.forEach(copy);
-  if (opt.esm) {
-    // backwards-compat to @std/esm v0.21.1
-    if (opt.mode) { throw new Error('Conflicting options: mode vs. esm'); }
-    clean.mode = opt.esm;
-    if (clean.mode === 'js') { clean.mode = 'auto'; }
-  }
-  return clean;
-}
-
-
 EX = function esmBridge(bridgeModule, opt) {
+  var esmRqr, mjsFn, esMod, expo;
   opt = optimizeOpts(opt);
-  var esmRqr = stdEsm(bridgeModule, fixEsmOpt(opt)), mjsFn, esMod, expo;
+  esmRqr = adapter(bridgeModule, opt);
   if (opt.reexport) {
     mjsFn = EX.guessMjsFile(bridgeModule, opt);
     esMod = esmRqr(mjsFn);

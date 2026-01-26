@@ -17,9 +17,12 @@ adapter = (function nodeVersionsGate() {
 function ifObj(x, d) { return ((x && typeof x) === 'object' ? x : d); }
 
 function subObAss(dest, prop, src) {
-  var ass = obAss({}, (src || EX.defaultConfig)[prop], dest[prop]);
-  dest[prop] = ass;
-  return ass;
+  var val = dest[prop], dflt = (src || EX.defaultConfig)[prop];
+  if (dflt) {
+    val = obAss({}, dflt, val);
+    dest[prop] = val;
+  }
+  return val;
 }
 
 function optimizeOpts(origOpts) {

@@ -25,8 +25,11 @@
   },
   "devDependencies": {
     "equal-pmb": "^0.1.29",
+    "eslint-config-nodejs-pmb": "^0.3.14",
+    "eslint-plugin-json-light-pmb": "^1.0.7",
+    "eslint-plugin-n": "^17.16.2",
     "is-fn": "^2.0.0",
-    "p-fatal": "^0.1.5",
+    "p-fatal": "^0.1.6",
     "usnam-pmb": "^0.2.5"
   },
 

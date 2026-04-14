@@ -1,5 +1,5 @@
 ﻿'use strict';
-var u = require('./usage.node');
+var u = require('./usage.node.js');
 console.log('node version: ', process.versions.node);
 console.log('as-is:', u);
 console.log('assigned:', Object.assign({}, u));

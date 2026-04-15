@@ -1,13 +1,28 @@
 import nodeFs from 'node:fs';
 import nodeModuleLib from 'node:module';
 
+import nowYmd from 'now-ymd';
+
 import defaultReexportOpt from './dfReexOpt-n24.js';
 import pkgInfo from './package.json' with { type: 'json' };
 
 const logTag = '[' + pkgInfo.name + ']';
-
 const cwarn = console.warn.bind(console, logTag, 'W:');
-// cwarn('adapter-n24 init @', process.cwd(),  process.argv);
+
+(function warnDeprecated() {
+  const envKey = 'ESMODPMB_IGNORE_DEPRECATION_UNTIL';
+  const ignoreUntil = (+process.env[envKey] || 0);
+  const today = nowYmd();
+  if (today <= ignoreUntil) { return; }
+  const invocation = Object.assign([...process.argv], {
+    processId: process.pid,
+    workingDirectory: process.cwd(),
+  });
+  cwarn('Module', pkgInfo.name, 'is deprecated!',
+    'See its readme for how to upgrade your code and/or mute this warning.',
+    'The invocation responsible for this warning probably was:', invocation,
+    'To mute it for today, set environment variable', envKey + '=' + today);
+}());
 
 
 const EX = function esmStub(bridgeModule) {

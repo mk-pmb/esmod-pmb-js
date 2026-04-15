@@ -9,6 +9,54 @@ Use esm (ES modules, import, export for Node v6) with less boilerplate.
 <!--/#echo -->
 
 
+⚠ DEPRECATED ⚠
+--------------
+
+As of 2026-04-15, this module is deprecated.
+I released a compatibility layer for Node.js v24 that you can use to
+make old software continue to work, but you should really upgrade your
+code base to instead embrace the native ESM support of Node.js v24 or later.
+
+### What you'll have to update:
+
+* Clarify your `import` statements:
+  * Use full filenames with explicit filename extension.
+    * If you're already using `eslint-config-nodejs-pmb` as your eslint rules,
+      it's eay: The rules package ships a script
+      `util/massfix_missing_import_fext.sh`
+      that will auto-fix probably all occurrences.
+      Make sure your project repo is clean before you run it, then
+      from the top of your project repo, run the fix script by full path.
+  * If you import JSON files, declare the type, e.g.
+    `import pkgInfo from './package.json' with { type: 'json' };`
+* Delete all bridge modules.
+* In all places where you had mentioned a bridge module
+  (probably in your `package.json`), write the `.mjs` file instead.
+* In all places where you called `nodemjs`
+  (probably in your `package.json`), call Node.js directly instead.
+* Properly declare that your project now requires Node.js v24 or later
+  (probably in your `package.json` and docs).
+
+### How to mute the deprecation warning
+
+If you don't want to deal with the deprecation warning today, you can mute it
+by setting environment variable `ESMODPMB_IGNORE_DEPRECATION_UNTIL`
+to a six-digit date (yymmdd).
+
+
+
+&nbsp;
+
+&nbsp;
+
+-----
+
+The next few sections are kept for historians.
+They explain why and how this module was useful for ancient Node.js versions.
+
+-----
+
+
 Usage
 -----
 

@@ -1,5 +1,5 @@
 { "name": "esmod-pmb",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Use esm (ES modules, import, export for Node v6) with less boilerplate.",
   "keywords": [],
 
@@ -21,7 +21,8 @@
   "eslintConfig": { "extends": "nodejs-pmb" },
 
   "dependencies": {
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "now-ymd": "^0.1.0"
   },
   "devDependencies": {
     "equal-pmb": "^0.1.29",

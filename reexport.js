@@ -8,13 +8,18 @@ var EX, adapter, pkgName = require('./package.json').name,
 
 adapter = (function nodeVersionsGate() {
   if (nodeVerNums[0] <= 21) { return require('./adapter-n16.js'); }
+  if ((nodeVerNums[0] >= 24) && (nodeVerNums[1] >= 12)) {
+    return require('./adapter-n24.mjs').default;
+  }
   var msg = (pkgName + ' is incompatible with your Node.js version.'
-    );
+    + ' Please upgrade to v24.12.0 or later');
   throw new Error(msg);
 }());
 
 
+function delPropIfEeq(o, k, v) { if (o[k] === v) { delete o[k]; } }
 function ifObj(x, d) { return ((x && typeof x) === 'object' ? x : d); }
+
 
 function subObAss(dest, prop, src) {
   var val = dest[prop], dflt = (src || EX.defaultConfig)[prop];
@@ -41,7 +46,6 @@ function singleObjectKey(o) {
 }
 
 function checkPreferDefault(mod, opt) {
-  if (!ifObj(mod)) { return mod; }
   var prefer = opt.preferDefaultExport;
   if (!prefer) { return mod; }
   if (!objHas.call(mod, 'default')) { return mod; }
@@ -60,8 +64,14 @@ EX = function esmBridge(bridgeModule, opt) {
   if (opt.reexport) {
     mjsFn = EX.guessMjsFile(bridgeModule, opt);
     esMod = esmRqr(mjsFn);
-    expo = checkPreferDefault(esMod, opt);
-    if (ifObj(expo) && opt.resolveImportedValues) { expo = obAss({}, expo); }
+    expo = esMod;
+    if (ifObj(expo)) {
+      if (opt.resolveImportedValues) {
+        expo = obAss({}, expo);
+        delPropIfEeq(expo, '__esModule', true);
+      }
+      expo = checkPreferDefault(expo, opt);
+    }
     bridgeModule.exports = expo;
   }
   return esmRqr;
